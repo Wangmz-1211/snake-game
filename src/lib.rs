@@ -14,6 +14,7 @@ pub struct Game {
     // Map information
     map: Vec<Vec<Cell>>,
     food: Position,
+    food_time: u32,
     // Runtime information
     status: GameStatus,
     timestamp: u32, // The process of the Game
@@ -55,6 +56,7 @@ impl Game {
         Game {
             map,
             food: Position::new(),
+            food_time: 0,
 
             timestamp: 0,
             score: 0,
@@ -81,7 +83,7 @@ impl Game {
                 self.win();
             }
 
-            if self.timestamp % 20 == 0 {
+            if self.food_time == 0 {
                 // generate a new food due to time.
                 // 1. clean the old food from map
                 let old_food = &self.food;
@@ -95,6 +97,7 @@ impl Game {
             }
 
             self.timestamp = self.timestamp + 1;
+            self.food_time -= 1;
 
             self.display_map();
             // wait input
@@ -129,13 +132,13 @@ impl Game {
 
     fn generate_food(&mut self) {
         loop {
-            // TODO some bug here
             let x = rand::thread_rng().gen_range(0..self.map_size);
             let y = rand::thread_rng().gen_range(0..self.map_size);
             match self.map[x][y] {
                 Cell::Blank => {
                     self.food = Position { x, y };
                     self.map[x][y] = Cell::Food;
+                    self.food_time = 20;
                     break;
                 }
                 _ => {
@@ -174,8 +177,8 @@ impl Game {
                     Cell::Blank => '🐾',
                     Cell::Wall => '🧱',
                     Cell::Food => '🍎',
-                    Cell::Body => '🐍',
-                    Cell::Head => '👦',
+                    Cell::Body => '🚌',
+                    Cell::Head => '👶',
                 }
             }
             let chars: String = chars.iter().collect();
