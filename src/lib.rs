@@ -136,6 +136,7 @@ impl Game {
                 Cell::Blank => {
                     self.food = Position { x, y };
                     self.map[x][y] = Cell::Food;
+                    break;
                 }
                 _ => {
                     continue;
@@ -217,6 +218,7 @@ impl Game {
                     self.length += 1;
                     self.ate = true;
                     self.map[p.x][p.y] = Cell::Blank;
+                    self.food.x = self.map_size;
                 }
                 _ => (),
             }
