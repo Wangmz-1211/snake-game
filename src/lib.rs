@@ -243,7 +243,7 @@ impl Game {
         self.map[head_pos.x][head_pos.y] = Cell::Head;
 
         // 1. generate strs first
-        let game_info = format!("\tHardness: {}\t\tScore: {}", self.hardness, self.score);
+        let game_info = format!("\tScore: {}", self.score);
         let mut map_lines: Vec<String> = vec![String::new(); self.map_rows];
         for i in 0..self.map_rows {
             map_lines[i] = self.map[i]
